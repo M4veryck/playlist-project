@@ -1,5 +1,8 @@
 const express = require('express')
 const app = express()
+const authRouter = require('./routes/auth')
+
+app.use('/api/v1/auth/', authRouter)
 
 app.get('/', (req, res) => {
   res.send('This is the home page')
