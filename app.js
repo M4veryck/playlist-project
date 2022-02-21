@@ -1,8 +1,10 @@
 const express = require('express')
 const app = express()
 const authRouter = require('./routes/auth')
+const playlistsRouter = require('./routes/playlists')
 
-app.use('/api/v1/auth/', authRouter)
+app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/playlists', playlistsRouter)
 
 app.get('/', (req, res) => {
   res.send('This is the home page')
