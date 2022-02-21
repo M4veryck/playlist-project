@@ -3,7 +3,8 @@ login = (req, res) => {
 }
 
 register = (req, res) => {
-  res.send('This is the register')
+  user = req.body
+  res.json(user)
 }
 
 module.exports = {
