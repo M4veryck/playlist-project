@@ -8,20 +8,18 @@ require('dotenv').config()
 const authRouter = require('./routes/auth')
 const playlistsRouter = require('./routes/playlists')
 
-// error handler
+// middleware
 const notFoundMiddleware = require('./middleware/not-found')
 const errorHandlerMiddleware = require('./middleware/error-handler')
-
-// middleware
 app.use(express.json())
 
 // routes
-app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/playlists', playlistsRouter)
-
 app.get('/', (req, res) => {
   res.send('This is the home page')
 })
+
+app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/playlists', playlistsRouter)
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
