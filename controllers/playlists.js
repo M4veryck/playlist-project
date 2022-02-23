@@ -1,23 +1,3 @@
-<<<<<<< HEAD
-const getAllPlaylists = (req, res) => {
-  res.send('This is the getAllPlaylists')
-}
-
-const createPlaylist = (req, res) => {
-  res.send('This is the createPlaylist')
-}
-
-const getPlaylist = (req, res) => {
-  res.send('This is the getPlaylist')
-}
-
-const updatePlaylist = (req, res) => {
-  res.send('This is the updatePlaylist')
-}
-
-const deletePlaylist = (req, res) => {
-  res.send('This is the deletePlaylist')
-=======
 const Playlist = require('../models/Playlist')
 const { StatusCodes } = require('http-status-codes')
 const { NotFoundError, UnauthenticatedError } = require('../errors')
@@ -80,7 +60,6 @@ const deletePlaylist = async (req, res) => {
   await playlistValidator(playlist, req)
   const deletedPlaylist = await Playlist.findOneAndDelete({ _id: playlist._id })
   res.status(StatusCodes.OK).json({ success: true })
->>>>>>> feature/playlists
 }
 
 module.exports = {
