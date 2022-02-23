@@ -1,20 +1,20 @@
-getAllPlaylists = (req, res) => {
+const getAllPlaylists = (req, res) => {
   res.send('This is the getAllPlaylists')
 }
 
-createPlaylist = (req, res) => {
+const createPlaylist = (req, res) => {
   res.send('This is the createPlaylist')
 }
 
-getPlaylist = (req, res) => {
+const getPlaylist = (req, res) => {
   res.send('This is the getPlaylist')
 }
 
-updatePlaylist = (req, res) => {
+const updatePlaylist = (req, res) => {
   res.send('This is the updatePlaylist')
 }
 
-deletePlaylist = (req, res) => {
+const deletePlaylist = (req, res) => {
   res.send('This is the deletePlaylist')
 }
 
