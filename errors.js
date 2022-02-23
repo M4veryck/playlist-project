@@ -10,7 +10,7 @@ class BadRequestError extends Error {
 class NotFoundError extends Error {
   constructor(message) {
     super(message)
-    this.statusCode = StatusCodes.NOT_FOUND_ERROR
+    this.statusCode = StatusCodes.NOT_FOUND
   }
 }
 
