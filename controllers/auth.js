@@ -7,7 +7,7 @@ const { BadRequestError, NotFoundError } = require('../errors')
 // helper function
 const createToken = (user) =>
   jwt.sign({ userId: user._id, name: user.name }, process.env.JWT_SECRET, {
-    expiresIn: '1d',
+    expiresIn: process.env.JWT_EXPIRATION,
   })
 
 // controllers
@@ -16,13 +16,16 @@ login = async (req, res) => {
   if (!email || !password) {
     throw new BadRequestError('Please enter email and password')
   }
+
   const user = await User.findOne({ email: email })
   if (!user) {
     throw new NotFoundError(`No user found with email ${email}`)
   }
+
   if (!bcrypt.compareSync(password, user.password)) {
     throw new BadRequestError('Incorrect password')
   }
+
   const token = createToken(user)
   res.status(StatusCodes.OK).json({ user: user.name, token: token })
 }
