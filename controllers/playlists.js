@@ -1,11 +1,25 @@
 const Playlist = require('../models/Playlist')
 const { StatusCodes } = require('http-status-codes')
-const {
-  BadRequestError,
-  NotFoundError,
-  UnauthenticatedError,
-} = require('../errors')
+const { NotFoundError, UnauthenticatedError } = require('../errors')
 
+// helper function for getPlaylist and updatePlaylist
+const playlistValidator = async (playlist, req) => {
+  if (!playlist) {
+    throw new NotFoundError(`No playlist matching the id: ${req.params.id}`)
+  }
+
+  const playlistAuthor = playlist.createdBy.toString()
+
+  if (req.user.userId !== playlistAuthor) {
+    throw new UnauthenticatedError(
+      'You are not allowed to access this resource'
+    )
+  }
+
+  return true
+}
+
+// controllers
 const getAllPlaylists = async (req, res) => {
   const playlists = await Playlist.find({ createdBy: req.user.userId }).sort(
     '-createdAt'
@@ -25,31 +39,27 @@ const createPlaylist = async (req, res) => {
 }
 
 const getPlaylist = async (req, res) => {
-  const playlist = await Playlist.findOne({
-    _id: req.params.id,
-  })
-
-  if (!playlist) {
-    throw new NotFoundError(`No playlist matching the id: ${req.params.id}`)
-  }
-
-  const playlistAuthor = playlist.createdBy.toString()
-
-  if (req.user.userId !== playlistAuthor) {
-    throw new UnauthenticatedError(
-      'You are not allowed to access this resource'
-    )
-  }
-
+  const playlist = await Playlist.findOne({ _id: req.params.id })
+  await playlistValidator(playlist, req)
   res.status(StatusCodes.OK).json(playlist)
 }
 
-const updatePlaylist = (req, res) => {
-  res.send('This is the updatePlaylist')
+const updatePlaylist = async (req, res) => {
+  const playlist = await Playlist.findOne({ _id: req.params.id })
+  await playlistValidator(playlist, req)
+  const updatedPlaylist = await Playlist.findOneAndUpdate(
+    { _id: playlist._id },
+    req.body,
+    { new: true, runValidators: true, overwrite: false }
+  )
+  res.status(StatusCodes.OK).json(updatedPlaylist)
 }
 
-const deletePlaylist = (req, res) => {
-  res.send('This is the deletePlaylist')
+const deletePlaylist = async (req, res) => {
+  const playlist = await Playlist.findOne({ _id: req.params.id })
+  await playlistValidator(playlist, req)
+  const deletedPlaylist = await Playlist.findOneAndDelete({ _id: playlist._id })
+  res.status(StatusCodes.OK).json({ success: true })
 }
 
 module.exports = {

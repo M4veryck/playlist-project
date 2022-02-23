@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const connectDB = require('./db/connect')
+
 require('express-async-errors')
 require('dotenv').config()
 
@@ -14,7 +15,6 @@ const errorHandlerMiddleware = require('./middleware/error-handler')
 const authMiddleware = require('./middleware/auth')
 app.use(express.json())
 
-// routes
 app.get('/', (req, res) => {
   res.send('This is the home page')
 })
