@@ -5,12 +5,14 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     msg: err.message || 'Something went wrong, please try again later',
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
   }
+
   if (err.name === 'ValidationError') {
     customError.msg = Object.values(err.errors)
       .map((item) => item.message)
       .join('. ')
     customError.statusCode = StatusCodes.BAD_REQUEST
   }
+
   if (err.code && err.code === 11000) {
     const duplicatedFields = Object.keys(err.keyValue)
       .map((key) => {
@@ -20,6 +22,12 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     customError.msg = `Duplicated [${duplicatedFields}] field(s), please choose some other values`
     customError.statusCode = StatusCodes.BAD_REQUEST
   }
+
+  if (err.name === 'CastError') {
+    customError.msg = `Invalid id: ${err.value}`
+    customError.statusCode = StatusCodes.BAD_REQUEST
+  }
+
   return res.status(customError.statusCode).json({ msg: customError.msg })
 }
 

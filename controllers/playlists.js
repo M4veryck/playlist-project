@@ -1,11 +1,16 @@
 const Playlist = require('../models/Playlist')
 const { StatusCodes } = require('http-status-codes')
-const { BadRequestError, NotFoundError } = require('../errors')
+const {
+  BadRequestError,
+  NotFoundError,
+  UnauthenticatedError,
+} = require('../errors')
 
 const getAllPlaylists = async (req, res) => {
   const playlists = await Playlist.find({ createdBy: req.user.userId }).sort(
     '-createdAt'
   )
+
   res
     .status(StatusCodes.OK)
     .json({ playlists: playlists, count: playlists.length })
@@ -19,8 +24,24 @@ const createPlaylist = async (req, res) => {
   res.status(StatusCodes.CREATED).json(newPlaylist)
 }
 
-const getPlaylist = (req, res) => {
-  res.send('This is the getPlaylist')
+const getPlaylist = async (req, res) => {
+  const playlist = await Playlist.findOne({
+    _id: req.params.id,
+  })
+
+  if (!playlist) {
+    throw new NotFoundError(`No playlist matching the id: ${req.params.id}`)
+  }
+
+  const playlistAuthor = playlist.createdBy.toString()
+
+  if (req.user.userId !== playlistAuthor) {
+    throw new UnauthenticatedError(
+      'You are not allowed to access this resource'
+    )
+  }
+
+  res.status(StatusCodes.OK).json(playlist)
 }
 
 const updatePlaylist = (req, res) => {
