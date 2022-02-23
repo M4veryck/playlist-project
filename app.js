@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const connectDB = require('./db/connect')
+
 require('express-async-errors')
 require('dotenv').config()
 
@@ -11,15 +12,15 @@ const playlistsRouter = require('./routes/playlists')
 // middleware
 const notFoundMiddleware = require('./middleware/not-found')
 const errorHandlerMiddleware = require('./middleware/error-handler')
+const authMiddleware = require('./middleware/auth')
 app.use(express.json())
 
-// routes
 app.get('/', (req, res) => {
   res.send('This is the home page')
 })
 
 app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/playlists', playlistsRouter)
+app.use('/api/v1/playlists', authMiddleware, playlistsRouter)
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
