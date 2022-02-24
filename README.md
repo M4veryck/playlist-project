@@ -6,6 +6,11 @@ playlist, as well as view their playlists. The Database used is MongoDB.
 Authorization method is Bearer Token, and extra security libraries were added. For further
 info please visit [Playlists API Website](https://playlists-api-01.herokuapp.com/).
 
+## Author
+
+This project was developed by me, [Maveryck Maya](https://github.com/M4veryck), 
+a 20-year-old math student and junior backend who's passionate about creating new apps.
+
 ## Setup [Taken from [1]]
 
 In order to use the Playlists API, you are required to follow these steps:
