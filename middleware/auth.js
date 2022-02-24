@@ -1,3 +1,5 @@
+// [All of auth.js idea taken from [1], this
+// file was partially modified]
 const jwt = require('jsonwebtoken')
 const { UnauthenticatedError } = require('../errors')
 

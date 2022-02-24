@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 const connectDB = require('./db/connect')
+
+// security features [Taken from [1]]
 const helmet = require('helmet')
 const cors = require('cors')
 const xss = require('xss-clean')
@@ -46,6 +48,7 @@ app.use(errorHandlerMiddleware)
 // server start
 const port = process.env.PORT || 5000
 
+// [Taken from [1]]
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI)

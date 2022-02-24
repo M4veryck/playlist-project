@@ -1,3 +1,5 @@
+// [All of error-handler.js idea taken from [1], this
+// file was partially modified]
 const { StatusCodes } = require('http-status-codes')
 
 const errorHandlerMiddleware = (err, req, res, next) => {

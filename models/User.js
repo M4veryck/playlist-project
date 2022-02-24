@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema({
   },
 })
 
+// [Idea taken from [1], this function was partially modified]
 UserSchema.pre('save', function (next) {
   this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(12))
   next()
